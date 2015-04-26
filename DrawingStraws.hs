@@ -11,12 +11,12 @@ main = do
     print args
     let (numStraws, numDraws) = parseArgs args
 
-    let shorts = take numDraws $ shortStraws numStraws seed
+    let shorts = take numDraws $ randomShortStraws numStraws seed
     print shorts
 
 
-shortStraws :: Int -> StdGen -> [Straw]
-shortStraws numStraws = randomRs (1,numStraws)
+randomShortStraws :: Int -> StdGen -> [Straw]
+randomShortStraws numStraws = randomRs (1,numStraws)
 
 parseArgs :: [String] -> (Int, Int)
 parseArgs args = (read $ args !! 0, read $ args !! 1)
