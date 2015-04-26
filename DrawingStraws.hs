@@ -2,7 +2,7 @@ import System.Environment (getArgs)
 import System.Random
 import Data.List
 
-type Straw = Int
+type Straw = (Int, Bool)
 
 main = do
     seed <- newStdGen
@@ -14,8 +14,10 @@ main = do
     let shorts = take numDraws $ randomShortStraws numStraws seed
     print shorts
 
+drawStraw :: [Straw] -> Straw
+drawStraw = head
 
-randomShortStraws :: Int -> StdGen -> [Straw]
+randomShortStraws :: Int -> StdGen -> [Int]
 randomShortStraws numStraws = randomRs (1,numStraws)
 
 parseArgs :: [String] -> (Int, Int)
