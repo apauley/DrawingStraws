@@ -1,10 +1,17 @@
+import System.Environment (getArgs)
 import System.Random
 import Data.List
 
 main = do
-    seed  <- newStdGen
-    let shorts = take 10 $ short_straws seed
+    seed <- newStdGen
+    args <- getArgs
+
+    print args
+    let numStraws = read $ head args :: Int
+    print numStraws
+
+    let shorts = take 10 $ shortStraws numStraws seed
     print shorts
 
-short_straws :: StdGen -> [Int]
-short_straws = randomRs (1,10)
+shortStraws :: Int -> StdGen -> [Int]
+shortStraws numStraws = randomRs (1,numStraws)
