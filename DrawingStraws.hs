@@ -7,11 +7,14 @@ main = do
     args <- getArgs
 
     print args
-    let numStraws = read $ head args :: Int
+    let (numStraws, numDraws) = parseArgs args
     print numStraws
 
-    let shorts = take 10 $ shortStraws numStraws seed
+    let shorts = take numDraws $ shortStraws numStraws seed
     print shorts
+
+parseArgs :: [String] -> (Int, Int)
+parseArgs args = (read $ args !! 0, read $ args !! 1)
 
 shortStraws :: Int -> StdGen -> [Int]
 shortStraws numStraws = randomRs (1,numStraws)
