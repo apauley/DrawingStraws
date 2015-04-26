@@ -3,8 +3,8 @@ import Data.List
 
 main = do
     seed  <- newStdGen
-    let rs = randomlist 10 seed
-    print rs
+    let shorts = take 10 $ short_straws seed
+    print shorts
 
-randomlist :: Int -> StdGen -> [Int]
-randomlist n = take n . unfoldr (Just . random)
+short_straws :: StdGen -> [Int]
+short_straws = randomRs (1,10)
