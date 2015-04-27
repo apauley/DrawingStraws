@@ -12,22 +12,22 @@ type Count = Int
 type StatsMap = Map ShortPos Count
 
 main = do
-    seed <- newStdGen
-    args <- getArgs
+  seed <- newStdGen
+  args <- getArgs
 
-    let (numStraws, numDraws) = parseArgs args
-    let msg = "Counting short straw occurrences over " ++ show numDraws ++
-              " draws, with " ++ show numStraws ++ " straws in each bunch.\n"
-    putStrLn msg
+  let (numStraws, numDraws) = parseArgs args
+  let msg = "Counting short straw occurrences over " ++ show numDraws ++
+            " draws, with " ++ show numStraws ++ " straws in each bunch.\n"
+  putStrLn msg
 
-    let shortStream = randomShortPositions seed
-    let draws = take numDraws $ drawStream shortStream numStraws
+  let shortStream = randomShortPositions seed
+  let draws = take numDraws $ drawStream shortStream numStraws
 
-    putStrLn $ "Performed " ++ show (length draws) ++ " draws."
-    putStrLn "Counting position occurrences...\n"
+  putStrLn $ "Performed " ++ show (length draws) ++ " draws."
+  putStrLn "Counting position occurrences...\n"
 
-    let statsMap = calcStats draws
-    putStrLn $ statsMessage statsMap
+  let statsMap = calcStats draws
+  putStrLn $ statsMessage statsMap
 
 -- Trying to simulate the action of drawing straws by recursively looking
 -- at a decreasing set of straws until a short is found.
