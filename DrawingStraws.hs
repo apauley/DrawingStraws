@@ -56,15 +56,7 @@ calcStats :: [ShortPos] -> StatsMap
 calcStats = foldl updateStats Map.empty
 
 updateStats :: StatsMap -> ShortPos -> StatsMap
-updateStats statsMap shortPos =
-  Map.insert shortPos count statsMap
-  where count = increment statsMap shortPos
-
-increment :: StatsMap -> ShortPos -> Count
-increment statsMap shortPos =
-  case (Map.lookup shortPos statsMap) of
-    Nothing    -> 1
-    Just count -> count + 1
+updateStats statsMap shortPos = Map.insertWith (+) shortPos 1 statsMap
 
 parseArgs :: [String] -> (Int, Int)
 parseArgs args = (read $ args !! 0, read $ args !! 1)
