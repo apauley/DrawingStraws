@@ -1,10 +1,14 @@
 import System.Environment (getArgs)
 import System.Random
 import Data.List
+import Data.Map (Map)
 
 type ShortPos = Int
 type Straw = (ShortPos, Bool)
 type BunchOfStraws = [Straw]
+
+type Count = Int
+type StatsMap = Map ShortPos Count
 
 main = do
     seed <- newStdGen
