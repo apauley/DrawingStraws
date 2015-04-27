@@ -19,12 +19,15 @@ main = do
               " straw draws, with " ++ show numStraws ++ " straws in each bunch.\n"
     putStrLn msg
 
-    let draws = take numDraws $ map drawStraws $ bunchesOfStraws numStraws $ randomShortPositions numStraws seed
+    let draws = take numDraws $ draws numStraws $ randomShortPositions numStraws seed
 
     let statsMap = calcStats draws
     putStrLn "Stats:"
     print statsMap
     putStrLn ""
+
+draws :: Int -> [ShortPos] -> [ShortPos]
+draws numStraws shorts = map drawStraws $ bunchesOfStraws numStraws shorts
 
 -- Trying to simulate action of drawing straws by recursively looking at
 -- a decreasing set of straws until a short is found.
