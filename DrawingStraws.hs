@@ -56,7 +56,10 @@ countStr :: String -> (ShortPos, Count) -> String
 countStr acc (pos, count) = acc ++ show pos ++ ":\t" ++ show count ++ "\n"
 
 calcStats :: [ShortPos] -> StatsMap
-calcStats xs = Map.fromListWith (+) [(x, 1) | x <- xs]
+calcStats xs = Map.fromList (frequency xs)
+
+frequency :: Ord a => [a] -> [(a, Int)]
+frequency xs = map (\l -> (head l, length l)) (group (sort xs))
 
 parseArgs :: [String] -> (Int, Int)
 parseArgs args = (read $ args !! 0, read $ args !! 1)
