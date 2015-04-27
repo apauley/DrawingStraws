@@ -3,6 +3,7 @@ import System.Random
 import Data.List
 
 type Straw = (Int, Bool)
+type BunchOfStraws = [Straw]
 
 main = do
     seed <- newStdGen
@@ -13,6 +14,12 @@ main = do
 
     let shorts = take numDraws $ randomShortStraws numStraws seed
     print shorts
+
+    let bunch = bunchOfStraws numStraws $ head shorts
+    print bunch
+
+bunchOfStraws :: Int -> Int -> BunchOfStraws
+bunchOfStraws numStraws shortPos = map (\i -> (i, i == shortPos)) [1..numStraws]
 
 drawStraw :: [Straw] -> Straw
 drawStraw = head
