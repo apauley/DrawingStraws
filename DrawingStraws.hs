@@ -56,10 +56,7 @@ countStr :: String -> (ShortPos, Count) -> String
 countStr acc (pos, count) = acc ++ show pos ++ ":\t" ++ show count ++ "\n"
 
 calcStats :: [ShortPos] -> StatsMap
-calcStats = foldl updateStats Map.empty
-
-updateStats :: StatsMap -> ShortPos -> StatsMap
-updateStats statsMap shortPos = Map.insertWith (+) shortPos 1 statsMap
+calcStats xs = Map.fromListWith (+) [(x, 1) | x <- xs]
 
 parseArgs :: [String] -> (Int, Int)
 parseArgs args = (read $ args !! 0, read $ args !! 1)
