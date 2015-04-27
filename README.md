@@ -13,22 +13,20 @@ The DrawingStraws executable takes 2 parameters:
  2. How many random draws we should count.
 
 ```bash
-$ .cabal-sandbox/bin/DrawingStraws 10 1000000
-Counting short straw occurrences over 1000000 draws, with 10 straws in each bunch.
+$ .cabal-sandbox/bin/DrawingStraws 5 5000000
+Counting short straw occurrences over 5000000 draws, with 5 straws in each bunch.
+
+Performed 5000000 draws.
+Counting position occurrences...
 
 Short straw position counts:
-1:	100179
-2:	99487
-3:	99837
-4:	100021
-5:	100044
-6:	100124
-7:	99939
-8:	100383
-9:	100160
-10:	99826
+1:	999978
+2:	999848
+3:	999511
+4:	999367
+5:	1001296
 
-Total: 1000000
+Total: 5000000
 ```
 
 ## Building
