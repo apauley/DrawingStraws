@@ -24,9 +24,7 @@ main = do
     let draws = take numDraws $ drawStream shortStream numStraws
 
     let statsMap = calcStats draws
-    putStrLn "Stats:"
     putStrLn $ statsMessage statsMap
-    putStrLn ""
 
 -- Trying to simulate the action of drawing straws by recursively looking
 -- at a decreasing set of straws until a short is found.
@@ -47,7 +45,9 @@ randomShortPositions :: StdGen -> Int -> [ShortPos]
 randomShortPositions seed numStraws = randomRs (1,numStraws) seed
 
 statsMessage :: StatsMap -> String
-statsMessage statsMap = foldl countStr "" $ Map.toList statsMap
+statsMessage statsMap = "Short straw position counts:\n" ++ counters ++ "\n" ++ total
+  where counters = foldl countStr "" $ Map.toList statsMap
+        total    = "Total: " ++ show (foldl (+) 0 $ Map.elems statsMap)
 
 countStr :: String -> (ShortPos, Count) -> String
 countStr acc (pos, count) = acc ++ show pos ++ ":\t" ++ show count ++ "\n"
