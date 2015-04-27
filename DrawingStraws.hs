@@ -47,7 +47,10 @@ randomShortPositions :: StdGen -> Int -> [ShortPos]
 randomShortPositions seed numStraws = randomRs (1,numStraws) seed
 
 statsMessage :: StatsMap -> String
-statsMessage = show
+statsMessage statsMap = foldl countStr "" $ Map.toList statsMap
+
+countStr :: String -> (ShortPos, Count) -> String
+countStr acc (pos, count) = acc ++ show pos ++ ":\t" ++ show count ++ "\n"
 
 calcStats :: [ShortPos] -> StatsMap
 calcStats = foldl updateStats Map.empty
