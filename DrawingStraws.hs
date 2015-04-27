@@ -26,21 +26,6 @@ main = do
     print statsMap
     putStrLn ""
 
-
-calcStats :: [ShortPos] -> StatsMap
-calcStats = foldl updateStats Data.Map.empty
-
-updateStats :: StatsMap -> ShortPos -> StatsMap
-updateStats statsMap shortPos =
-  Data.Map.insert shortPos count statsMap
-  where count = increment statsMap shortPos
-
-increment :: StatsMap -> ShortPos -> Count
-increment statsMap shortPos =
-  case (Data.Map.lookup shortPos statsMap) of
-    Nothing    -> 1
-    Just count -> count + 1
-
 -- Trying to simulate action of drawing straws by recursively looking at
 -- a decreasing set of straws until a short is found.
 drawStraws :: BunchOfStraws -> ShortPos
@@ -55,6 +40,20 @@ bunchOfStraws numStraws shortPos = map (\i -> (i, i == shortPos)) [1..numStraws]
 
 randomShortPositions :: Int -> StdGen -> [ShortPos]
 randomShortPositions numStraws = randomRs (1,numStraws)
+
+calcStats :: [ShortPos] -> StatsMap
+calcStats = foldl updateStats Data.Map.empty
+
+updateStats :: StatsMap -> ShortPos -> StatsMap
+updateStats statsMap shortPos =
+  Data.Map.insert shortPos count statsMap
+  where count = increment statsMap shortPos
+
+increment :: StatsMap -> ShortPos -> Count
+increment statsMap shortPos =
+  case (Data.Map.lookup shortPos statsMap) of
+    Nothing    -> 1
+    Just count -> count + 1
 
 parseArgs :: [String] -> (Int, Int)
 parseArgs args = (read $ args !! 0, read $ args !! 1)
