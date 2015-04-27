@@ -1,7 +1,7 @@
 import System.Environment (getArgs)
 import System.Random
 import Data.List
-import Data.Map (Map)
+import Data.Map (Map, empty, insert, lookup)
 
 type ShortPos = Int
 type Straw = (ShortPos, Bool)
@@ -23,6 +23,20 @@ main = do
     let bunch = bunchOfStraws numStraws $ head shorts
     print bunch
     print $ drawStraws bunch
+
+    let statsMap = updateStats Data.Map.empty $ drawStraws bunch
+    print statsMap
+
+updateStats :: StatsMap -> ShortPos -> StatsMap
+updateStats statsMap shortPos =
+  Data.Map.insert shortPos count statsMap
+  where count = increment statsMap shortPos
+
+increment :: StatsMap -> ShortPos -> Count
+increment statsMap shortPos =
+  case (Data.Map.lookup shortPos statsMap) of
+    Nothing    -> 1
+    Just count -> count + 1
 
 -- Trying to simulate action of drawing straws by recursively looking at
 -- a decreasing set of straws until a short is found.
