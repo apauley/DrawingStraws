@@ -16,21 +16,21 @@ main = do
 
     let (numStraws, numDraws) = parseArgs args
     let msg = "Counting short straw occurrences over " ++ show numDraws ++
-              " straw draws, with " ++ show numStraws ++ " straws in each bunch.\n"
+              " draws, with " ++ show numStraws ++ " straws in each bunch.\n"
     putStrLn msg
 
-    let draws = take numDraws $ draws numStraws $ randomShortPositions numStraws seed
+    let draws = take numDraws $ drawStream numStraws $ randomShortPositions numStraws seed
 
     let statsMap = calcStats draws
     putStrLn "Stats:"
     print statsMap
     putStrLn ""
 
-draws :: Int -> [ShortPos] -> [ShortPos]
-draws numStraws shorts = map drawStraws $ bunchesOfStraws numStraws shorts
+drawStream :: Int -> [ShortPos] -> [ShortPos]
+drawStream numStraws shorts = map drawStraws $ bunchesOfStraws numStraws shorts
 
--- Trying to simulate action of drawing straws by recursively looking at
--- a decreasing set of straws until a short is found.
+-- Trying to simulate the action of drawing straws by recursively looking
+-- at a decreasing set of straws until a short is found.
 drawStraws :: BunchOfStraws -> ShortPos
 drawStraws (straw:tail) = if isShort then shortPos else drawStraws tail
   where (shortPos, isShort) = straw
