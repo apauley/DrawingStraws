@@ -17,12 +17,16 @@ main = do
 
     let bunch = bunchOfStraws numStraws $ head shorts
     print bunch
+    print $ drawStraws bunch
+
+-- Trying to simulate action of drawing straws by recursively looking at
+-- a decreasing set of straws until a short is found.
+drawStraws :: BunchOfStraws -> Int
+drawStraws (straw:tail) = if isShort then shortPos else drawStraws tail
+  where (shortPos, isShort) = straw
 
 bunchOfStraws :: Int -> Int -> BunchOfStraws
 bunchOfStraws numStraws shortPos = map (\i -> (i, i == shortPos)) [1..numStraws]
-
-drawStraw :: [Straw] -> Straw
-drawStraw = head
 
 randomShortPositions :: Int -> StdGen -> [Int]
 randomShortPositions numStraws = randomRs (1,numStraws)
