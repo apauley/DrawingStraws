@@ -15,18 +15,9 @@ main = do
     args <- getArgs
 
     let (numStraws, numDraws) = parseArgs args
-
-    let shorts = take numDraws $ randomShortPositions numStraws seed
-    print shorts
-
-    let bunch = bunchOfStraws numStraws $ head shorts
-    putStrLn "First bunch:"
-    print bunch
-    putStrLn ""
-
-    putStrLn "First draw:"
-    print $ drawStraws bunch
-    putStrLn ""
+    let msg = "Counting short straw occurrences over " ++ show numDraws ++
+              " straw draws, with " ++ show numStraws ++ " straws in each bunch.\n"
+    putStrLn msg
 
     let draws = take numDraws $ map drawStraws $ bunchesOfStraws numStraws $ randomShortPositions numStraws seed
 
