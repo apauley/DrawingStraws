@@ -1,7 +1,8 @@
 import System.Environment (getArgs)
 import System.Random
 import Data.List
-import Data.Map (Map, empty, insert, lookup, keys)
+import Data.Map (Map)
+import qualified Data.Map as Map
 
 type ShortPos = Int
 type Straw = (ShortPos, Bool)
@@ -49,16 +50,16 @@ statsMessage :: StatsMap -> String
 statsMessage = show
 
 calcStats :: [ShortPos] -> StatsMap
-calcStats = foldl updateStats Data.Map.empty
+calcStats = foldl updateStats Map.empty
 
 updateStats :: StatsMap -> ShortPos -> StatsMap
 updateStats statsMap shortPos =
-  Data.Map.insert shortPos count statsMap
+  Map.insert shortPos count statsMap
   where count = increment statsMap shortPos
 
 increment :: StatsMap -> ShortPos -> Count
 increment statsMap shortPos =
-  case (Data.Map.lookup shortPos statsMap) of
+  case (Map.lookup shortPos statsMap) of
     Nothing    -> 1
     Just count -> count + 1
 
