@@ -1,7 +1,7 @@
 import System.Environment (getArgs)
 import System.Random
 import Data.List
-import Data.Map (Map, empty, insert, lookup)
+import Data.Map (Map, empty, insert, lookup, keys)
 
 type ShortPos = Int
 type Straw = (ShortPos, Bool)
@@ -24,7 +24,7 @@ main = do
 
     let statsMap = calcStats draws
     putStrLn "Stats:"
-    print statsMap
+    putStrLn $ statsMessage statsMap
     putStrLn ""
 
 -- Trying to simulate the action of drawing straws by recursively looking
@@ -44,6 +44,9 @@ bunchOfStraws numStraws shortPos = map (\i -> (i, i == shortPos)) [1..numStraws]
 
 randomShortPositions :: StdGen -> Int -> [ShortPos]
 randomShortPositions seed numStraws = randomRs (1,numStraws) seed
+
+statsMessage :: StatsMap -> String
+statsMessage = show
 
 calcStats :: [ShortPos] -> StatsMap
 calcStats = foldl updateStats Data.Map.empty
