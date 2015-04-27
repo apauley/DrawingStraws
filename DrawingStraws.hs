@@ -19,15 +19,13 @@ main = do
               " draws, with " ++ show numStraws ++ " straws in each bunch.\n"
     putStrLn msg
 
-    let draws = take numDraws $ drawStream numStraws $ randomShortPositions numStraws seed
+    let shortStream = randomShortPositions seed
+    let draws = take numDraws $ drawStream shortStream numStraws
 
     let statsMap = calcStats draws
     putStrLn "Stats:"
     print statsMap
     putStrLn ""
-
-drawStream :: Int -> [ShortPos] -> [ShortPos]
-drawStream numStraws shorts = map drawStraws $ bunchesOfStraws numStraws shorts
 
 -- Trying to simulate the action of drawing straws by recursively looking
 -- at a decreasing set of straws until a short is found.
@@ -35,14 +33,17 @@ drawStraws :: BunchOfStraws -> ShortPos
 drawStraws (straw:tail) = if isShort then shortPos else drawStraws tail
   where (shortPos, isShort) = straw
 
-bunchesOfStraws :: Int -> [ShortPos] -> [BunchOfStraws]
-bunchesOfStraws numStraws positions = map (bunchOfStraws numStraws) positions
+drawStream :: (Int -> [ShortPos]) -> Int -> [ShortPos]
+drawStream shortStream numStraws = map drawStraws $ bunchesOfStraws shortStream numStraws
+
+bunchesOfStraws :: (Int -> [ShortPos]) -> Int -> [BunchOfStraws]
+bunchesOfStraws shortStream numStraws  = map (bunchOfStraws numStraws) $ shortStream numStraws
 
 bunchOfStraws :: Int -> ShortPos -> BunchOfStraws
 bunchOfStraws numStraws shortPos = map (\i -> (i, i == shortPos)) [1..numStraws]
 
-randomShortPositions :: Int -> StdGen -> [ShortPos]
-randomShortPositions numStraws = randomRs (1,numStraws)
+randomShortPositions :: StdGen -> Int -> [ShortPos]
+randomShortPositions seed numStraws = randomRs (1,numStraws) seed
 
 calcStats :: [ShortPos] -> StatsMap
 calcStats = foldl updateStats Data.Map.empty
