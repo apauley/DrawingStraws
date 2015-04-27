@@ -23,6 +23,9 @@ main = do
     let shortStream = randomShortPositions seed
     let draws = take numDraws $ drawStream shortStream numStraws
 
+    putStrLn $ "Performed " ++ show (length draws) ++ " draws."
+    putStrLn "Counting position occurrences...\n"
+
     let statsMap = calcStats draws
     putStrLn $ statsMessage statsMap
 
