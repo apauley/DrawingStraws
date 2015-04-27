@@ -1,4 +1,5 @@
 import System.Environment (getArgs)
+import Data.Time (getCurrentTime)
 import System.Random
 import Data.List
 import Data.Map (Map)
@@ -18,16 +19,18 @@ main = do
   let (numStraws, numDraws) = parseArgs args
   let msg = "Counting short straw occurrences over " ++ show numDraws ++
             " draws, with " ++ show numStraws ++ " straws in each bunch.\n"
-  putStrLn msg
+  logTime msg
 
   let shortStream = randomShortPositions seed
   let draws = take numDraws $ drawStream shortStream numStraws
 
-  putStrLn $ "Performed " ++ show (length draws) ++ " draws."
-  putStrLn "Counting position occurrences...\n"
+  logTime $ "Performed " ++ show (length draws) ++ " draws."
+  logTime "Counting position occurrences...\n"
 
   let statsMap = calcStats draws
   putStrLn $ statsMessage statsMap
+
+  logTime "Done."
 
 -- Trying to simulate the action of drawing straws by recursively looking
 -- at a decreasing set of straws until a short is found.
@@ -50,7 +53,7 @@ randomShortPositions seed numStraws = randomRs (1,numStraws) seed
 statsMessage :: StatsMap -> String
 statsMessage statsMap = "Short straw position counts:\n" ++ counters ++ "\n" ++ total
   where counters = foldl countStr "" $ Map.toList statsMap
-        total    = "Total: " ++ show (foldl (+) 0 $ Map.elems statsMap)
+        total    = "Total: " ++ show (foldl (+) 0 $ Map.elems statsMap) ++ "\n"
 
 countStr :: String -> (ShortPos, Count) -> String
 countStr acc (pos, count) = acc ++ show pos ++ ":\t" ++ show count ++ "\n"
@@ -63,3 +66,8 @@ frequency xs = map (\l -> (head l, length l)) (group (sort xs))
 
 parseArgs :: [String] -> (Int, Int)
 parseArgs args = (read $ args !! 0, read $ args !! 1)
+
+logTime :: String -> IO ()
+logTime msg = do
+  time <- getCurrentTime
+  putStrLn $ show time ++ " | " ++ msg
