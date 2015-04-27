@@ -14,18 +14,30 @@ main = do
     seed <- newStdGen
     args <- getArgs
 
-    print args
     let (numStraws, numDraws) = parseArgs args
 
     let shorts = take numDraws $ randomShortPositions numStraws seed
     print shorts
 
     let bunch = bunchOfStraws numStraws $ head shorts
+    putStrLn "First bunch:"
     print bunch
-    print $ drawStraws bunch
+    putStrLn ""
 
-    let statsMap = updateStats Data.Map.empty $ drawStraws bunch
+    putStrLn "First draw:"
+    print $ drawStraws bunch
+    putStrLn ""
+
+    let draws = take numDraws $ map drawStraws $ bunchesOfStraws numStraws $ randomShortPositions numStraws seed
+
+    let statsMap = calcStats draws
+    putStrLn "Stats:"
     print statsMap
+    putStrLn ""
+
+
+calcStats :: [ShortPos] -> StatsMap
+calcStats = foldl updateStats Data.Map.empty
 
 updateStats :: StatsMap -> ShortPos -> StatsMap
 updateStats statsMap shortPos =
@@ -43,6 +55,9 @@ increment statsMap shortPos =
 drawStraws :: BunchOfStraws -> ShortPos
 drawStraws (straw:tail) = if isShort then shortPos else drawStraws tail
   where (shortPos, isShort) = straw
+
+bunchesOfStraws :: Int -> [ShortPos] -> [BunchOfStraws]
+bunchesOfStraws numStraws positions = map (bunchOfStraws numStraws) positions
 
 bunchOfStraws :: Int -> ShortPos -> BunchOfStraws
 bunchOfStraws numStraws shortPos = map (\i -> (i, i == shortPos)) [1..numStraws]
