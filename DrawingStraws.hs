@@ -8,7 +8,7 @@ type Straw = (ShortPos, Bool)
 type BunchOfStraws = [Straw]
 
 type Count = Int
-type StatsMap = [(ShortPos, Count)]
+type ShortFrequency = [(ShortPos, Count)]
 
 main = do
   seed <- newStdGen
@@ -48,7 +48,7 @@ bunchOfStraws numStraws shortPos = map (\i -> (i, i == shortPos)) [1..numStraws]
 randomShortPositions :: StdGen -> Int -> [ShortPos]
 randomShortPositions seed numStraws = randomRs (1,numStraws) seed
 
-statsMessage :: StatsMap -> String
+statsMessage :: ShortFrequency -> String
 statsMessage statsMap = "Short straw position counts:\n" ++ counters ++ "\n" ++ total
   where counters = foldl countStr "" statsMap
         total    = "Total: " ++ show (foldl (+) 0 $ map snd statsMap) ++ "\n"
@@ -56,7 +56,7 @@ statsMessage statsMap = "Short straw position counts:\n" ++ counters ++ "\n" ++ 
 countStr :: String -> (ShortPos, Count) -> String
 countStr acc (pos, count) = acc ++ show pos ++ ":\t" ++ show count ++ "\n"
 
-calcStats :: [ShortPos] -> StatsMap
+calcStats :: [ShortPos] -> ShortFrequency
 calcStats = frequency
 
 frequency :: Ord a => [a] -> [(a, Int)]
