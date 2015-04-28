@@ -26,7 +26,7 @@ main = do
   logTime "Counting position occurrences...\n"
 
   let statsMap = shortFrequency draws
-  putStrLn $ statsMessage statsMap
+  putStrLn $ summary statsMap
 
   logTime "Done."
 
@@ -48,8 +48,8 @@ bunchOfStraws numStraws shortPos = map (\i -> (i, i == shortPos)) [1..numStraws]
 randomShortPositions :: StdGen -> Int -> [ShortPos]
 randomShortPositions seed numStraws = randomRs (1,numStraws) seed
 
-statsMessage :: ShortFrequency -> String
-statsMessage statsMap = "Short straw position counts:\n" ++ counters ++ "\n" ++ total
+summary :: ShortFrequency -> String
+summary statsMap = "Short straw position counts:\n" ++ counters ++ "\n" ++ total
   where counters = foldl countStr "" statsMap
         total    = "Total: " ++ show (foldl (+) 0 $ map snd statsMap) ++ "\n"
 
