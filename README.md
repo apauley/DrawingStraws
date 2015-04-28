@@ -33,6 +33,14 @@ Total: 5000000
 
 ## Building
 
+Needed only once after cloning repo:
+
+```bash
+$ cabal sandbox init
+```
+
+Compile and install after each code change:
+
 ```bash
 $ cabal install -j
 ```
