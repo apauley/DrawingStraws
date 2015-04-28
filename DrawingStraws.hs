@@ -25,7 +25,7 @@ main = do
   logTime $ "Performed " ++ show (length draws) ++ " draws."
   logTime "Counting position occurrences...\n"
 
-  let statsMap = calcStats draws
+  let statsMap = shortFrequency draws
   putStrLn $ statsMessage statsMap
 
   logTime "Done."
@@ -56,8 +56,8 @@ statsMessage statsMap = "Short straw position counts:\n" ++ counters ++ "\n" ++ 
 countStr :: String -> (ShortPos, Count) -> String
 countStr acc (pos, count) = acc ++ show pos ++ ":\t" ++ show count ++ "\n"
 
-calcStats :: [ShortPos] -> ShortFrequency
-calcStats = frequency
+shortFrequency :: [ShortPos] -> ShortFrequency
+shortFrequency = frequency
 
 frequency :: Ord a => [a] -> [(a, Int)]
 frequency xs = map (\l -> (head l, length l)) (group (sort xs))
