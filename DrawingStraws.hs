@@ -2,15 +2,13 @@ import System.Environment (getArgs)
 import Data.Time (getCurrentTime)
 import System.Random
 import Data.List
-import Data.Map (Map)
-import qualified Data.Map as Map
 
 type ShortPos = Int
 type Straw = (ShortPos, Bool)
 type BunchOfStraws = [Straw]
 
 type Count = Int
-type StatsMap = Map ShortPos Count
+type StatsMap = [(ShortPos, Count)]
 
 main = do
   seed <- newStdGen
@@ -52,14 +50,14 @@ randomShortPositions seed numStraws = randomRs (1,numStraws) seed
 
 statsMessage :: StatsMap -> String
 statsMessage statsMap = "Short straw position counts:\n" ++ counters ++ "\n" ++ total
-  where counters = foldl countStr "" $ Map.toList statsMap
-        total    = "Total: " ++ show (foldl (+) 0 $ Map.elems statsMap) ++ "\n"
+  where counters = foldl countStr "" statsMap
+        total    = "Total: " ++ show (foldl (+) 0 $ map snd statsMap) ++ "\n"
 
 countStr :: String -> (ShortPos, Count) -> String
 countStr acc (pos, count) = acc ++ show pos ++ ":\t" ++ show count ++ "\n"
 
 calcStats :: [ShortPos] -> StatsMap
-calcStats xs = Map.fromList (frequency xs)
+calcStats = frequency
 
 frequency :: Ord a => [a] -> [(a, Int)]
 frequency xs = map (\l -> (head l, length l)) (group (sort xs))
