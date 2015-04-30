@@ -20,6 +20,6 @@ executable DrawingStraws
   -- other-modules:
   -- other-extensions:
   build-depends:       base >=4.8 && <4.9, random, time, deepseq
-  GHC-Options:         -Wall -Werror -O2
+  GHC-Options:         -Wall -Werror -O2 -rtsopts
   -- hs-source-dirs:
   default-language:    Haskell2010
