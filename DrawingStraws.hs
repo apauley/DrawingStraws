@@ -1,7 +1,12 @@
 import System.Environment (getArgs)
+
 import Data.Time (getCurrentTime)
-import System.Random
 import Data.List
+
+import System.Random
+
+import Control.Exception
+import Control.DeepSeq
 
 type ShortPos = Int
 type Straw = (ShortPos, Bool)
@@ -21,7 +26,7 @@ main = do
   logTime msg
 
   let shortStream = randomShortPositions seed
-  let draws = take numDraws $ drawStream shortStream numStraws
+  draws <- evaluate $ deep $ take numDraws $ drawStream shortStream numStraws
 
   logTime $ "Performed " ++ show (length draws) ++ " draws."
   logTime "Counting position occurrences...\n"
@@ -71,3 +76,6 @@ logTime :: String -> IO ()
 logTime msg = do
   time <- getCurrentTime
   putStrLn $ show time ++ " | " ++ msg
+
+deep :: NFData a => a -> a
+deep a = deepseq a a
