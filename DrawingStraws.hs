@@ -10,6 +10,7 @@ type BunchOfStraws = [Straw]
 type Count = Int
 type ShortFrequency = [(ShortPos, Count)]
 
+main :: IO ()
 main = do
   seed <- newStdGen
   args <- getArgs
@@ -33,7 +34,8 @@ main = do
 -- Trying to simulate the action of drawing straws by recursively looking
 -- at a decreasing set of straws until a short is found.
 drawStraws :: BunchOfStraws -> ShortPos
-drawStraws (straw:tail) = if isShort then shortPos else drawStraws tail
+drawStraws [] = error "No short straw in bunch!"
+drawStraws (straw:straws) = if isShort then shortPos else drawStraws straws
   where (shortPos, isShort) = straw
 
 drawStream :: (Int -> [ShortPos]) -> Int -> [ShortPos]
